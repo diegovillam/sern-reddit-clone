@@ -33,12 +33,14 @@ This project is built with create-react-app and ExpressJS so requires minimal wo
 ``` cd client
 ``` yarn install (or npm install)
 ``` yarn start
+``` 
 
 To start the development server for the server/back end:
 
 ``` cd server
 ``` yarn install (or npm install)
 ``` nodemon app.js
+```
 
 **NOTE**: For the websockets to work, for live messaging, you need to edit the endpoint address specified in client/modules/Sockets.js towards the IP hosting your web server!
 
