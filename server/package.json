@@ -1,0 +1,24 @@
+{
+  "name": "reduxexample",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "async": "^2.6.1",
+    "bcrypt": "^2.0.1",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.6.9",
+    "ejs": "~2.5.7",
+    "express": "~4.16.0",
+    "http-errors": "~1.6.2",
+    "jsonwebtoken": "^8.2.1",
+    "moment": "^2.22.1",
+    "morgan": "~1.9.0",
+    "mysql2": "^1.5.3",
+    "nodemon": "^1.17.4",
+    "passport": "^0.4.0",
+    "passport-local": "^1.0.0",
+    "sequelize": "^4.37.8",
+    "slug": "^0.9.1",
+    "socket.io": "^2.1.1"
+  }
+}
