@@ -5,6 +5,7 @@ import {
 const initialState = {
     active: {}, // Get the viewing subreddit
     subreddits: [],
+    page: {},
     loading: false
 };
 
@@ -19,7 +20,8 @@ export default function(state = initialState, action) {
         case SUBREDDIT.FETCH_SUBREDDIT_LIST_SUCCESS: {
             return {
                 ...state,
-                subreddits: action.payload.data,
+                subreddits: action.payload,
+                page: action.pagedata,
                 loading: false
             }
         }

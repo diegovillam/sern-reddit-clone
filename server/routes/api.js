@@ -92,9 +92,8 @@ router.get('/comments/:post', (req, res) => {
 
             // There are available pages if this count is lower than the current page * the max amount per page
             var pagedata = {
-                hasNext: count >= ((Number(offset) + 1) * models.comment.settings.maxPerPage),
-                page: Number(offset),
-                data: {count:count, offset:Number(offset), mpp: models.comment.settings.maxPerPage}
+                hasNext: count > ((Number(offset) + 1) * models.comment.settings.maxPerPage),
+                page: Number(offset)
             }
             res.status(200).json({ comments: comments, pagedata: pagedata });
         });
@@ -104,23 +103,40 @@ router.get('/comments/:post', (req, res) => {
 });
 
 router.get('/subreddits/:name?', (req, res) => {
+    var page = req.query.p ? Number(req.query.p) : 0;
+
+    let limit = models.subreddit.settings.maxPerPage;
+    let offset = page * limit;
+    
     if(req.params.name === undefined) {
-        models.subreddit.findAll().then(results => {
-            res.status(200).json(results);
+        models.subreddit.findAndCountAll({limit: limit, offset: offset}).then(results => {
+            let pagedata = {
+                hasPrevious: page > 0,
+                hasNext: results.count > ((page + 1) * models.subreddit.settings.maxPerPage),
+                current: page
+            };
+            res.status(200).json({subreddits: results.rows, pagedata: pagedata});
         }).catch(error => {
+            console.log('Error: ', error);
             res.status(400).json(error);
         });
     } else {
-        models.subreddit.findAll({ where: { name: { [Op.like]: '%'+req.params.name+'%' }}}).then(results => {
-            res.status(200).json(results);
+        models.subreddit.findAndCountAll({ limit:limit, offset:offset, where: { name: { [Op.like]: '%'+req.params.name+'%' }}}).then(results => {
+            let pagedata = {
+                hasPrevious: page > 0,
+                hasNext: results.count > ((page + 1) * models.subreddit.settings.maxPerPage),
+                current: page
+            }
+            res.status(200).json({subreddits: results.rows, pagedata: pagedata});
         }).catch(error => {
+            console.log('Error: ', error);
             res.status(400).json(error);
         });
     }
 });
 
 router.get('/posts/home', (req, res) => {
-    var page = req.query.p ? (typeof req.query.p === 'number' ? req.query.p : 0) : 0;
+    var page = req.query.p ? Number(req.query.p) : 0;
     var userId =  req.query.u ? req.query.u : undefined;
     var maxPerPage = models.post.settings.maxPerPage;
 
@@ -149,7 +165,7 @@ router.get('/posts/:subreddit', (req, res) => {
         if(subreddit === null || subreddit === null) {
             throw new Error('Subreddit not found.');
         }
-        var page = req.query.p ? (typeof req.query.p === 'number' ? req.query.p : 0) : 0;
+        var page = req.query.p ? Number(req.query.p) : 0;
         var user =  req.query.u ? req.query.u : undefined;
         var pageMax = models.post.settings.maxPerPage;
         

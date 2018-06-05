@@ -44,8 +44,7 @@ class InboxPage extends Component {
     }
 
     selectMessage(id) {
-        this.setState({ selected: id });
-        this.setState({ activePanel: 'right' });
+        this.setState({ selected: id, activePanel: 'right' });
     }
 
     componentDidMount() {
@@ -148,7 +147,7 @@ class InboxPage extends Component {
                         </div>
                         {/*This is the current message view */}
                         <div className={"column is-9 is-inbox-right" + (this.state.activePanel === "right" ? " show" : " hide")} id="rightPanel">
-                            <div className="container" style={{height: '100%', width:'100%'}}>
+                            <div className="container" style={{height: '100%'}}>
                                 {this.state.selected === undefined ? (
                                     <div>
                                         <p className="has-text-weight-semibold">You haven't selected a message yet.</p>

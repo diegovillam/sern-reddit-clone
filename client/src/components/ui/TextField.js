@@ -37,11 +37,16 @@ export default class TextField extends Component {
         const classes = 'input' + (this.props.error ? ' is-danger' : '');
 
         return (
-            <div className="field">
+            <div className={"field".concat(this.props.addon ? " has-addons" : "")}>
                 {label}
                 <div className="control">
                     <input type={this.props.type} name={this.props.name} className={classes} value={this.props.value} placeholder={this.props.placeholder} onChange={this.props.onChange}/>
                 </div>
+                {this.props.addon && (
+                    <div className="control">
+                        {this.props.addon}
+                    </div>
+                )}
                 {error}
                 {help}
             </div>

@@ -82,6 +82,7 @@ class PostsPage extends Component {
                                 <p className="is-uppercase has-text-weight-semibold">You are currently navigating <span className="is-lowercase">r/</span>{this.props.active.name}</p>
                                 <hr/>
                                 {posts}
+                                <hr/>
                                 <Pagination
                                     previous={{
                                         available: this.props.page.hasPrevious,
@@ -93,6 +94,7 @@ class PostsPage extends Component {
                                     }}
                                     onChangePage={this.updateData}
                                     current={this.props.page.current}
+                                    
                                 />
                             </div>
 

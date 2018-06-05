@@ -1,6 +1,8 @@
 * Comment pagination. Comments are all loaded at once, it should only load batches of 20 or 30 comments and a button at the bottom to load more and append them to the current list. [x]
 
-* Subreddit pagination and search. []
+* Subreddit pagination [x]
+
+* Subreddit search []
 
 * Posts search. []
 

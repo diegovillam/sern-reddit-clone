@@ -1,12 +1,16 @@
 import { SUBREDDIT } from './types';
 import axios from 'axios';
 
-export const fetchSubreddits = () => dispatch => {
+export const fetchSubreddits = (page, search) => dispatch => {
     dispatch({ type: SUBREDDIT.FETCH_SUBREDDIT_LIST_PENDING });
-    return axios.get('/api/subreddits').then(subreddits => {
+
+    let url = search === undefined ? '/api/subreddits?p=' + page : '/api/subreddits/' + search + '?p=' + page;
+
+    return axios.get(url).then(results => {
         dispatch({
             type: SUBREDDIT.FETCH_SUBREDDIT_LIST_SUCCESS,
-            payload: subreddits
+            payload: results.data.subreddits,
+            pagedata: results.data.pagedata
         });
     }).catch(error => {
         dispatch({

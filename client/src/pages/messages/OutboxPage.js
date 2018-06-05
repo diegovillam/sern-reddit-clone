@@ -13,13 +13,14 @@ export default class InboxPage extends Component {
             loading: true,
             selected: undefined,
             messages: [],
-            sending: false
+            sending: false,
+            activePanel: 'left'
         }
         this.selectMessage = this.selectMessage.bind(this);
     }
 
     selectMessage(id) {
-        this.setState({ selected: id });
+        this.setState({ selected: id, activePanel: 'right' });
     }
 
     componentDidMount() {
@@ -57,6 +58,10 @@ export default class InboxPage extends Component {
         // JSX for the selected message
         let _selected = (selected !== undefined) && (
             <div>
+                <div className="is-hidden-tablet">
+                    <p><a onClick={() => this.setState({ activePanel: 'left' })}>Return to outbox</a></p>
+                    <hr/>
+                </div>
                 <p>Message sent to <span className="has-text-weight-semibold">{messages[selected].receiver.username}</span> in <span className="has-text-weight-semibold">{messages[selected].createdAtFormatted}</span></p>
                 <hr/>
                 <p><strong>{messages[selected].subject}</strong></p>
@@ -78,18 +83,16 @@ export default class InboxPage extends Component {
                 {this.state.loading === true ? (
                     <Loading/>
                 ) : (
-                    <div className="columns is-mobile">
+                    <div className="columns is-marginless">
                         {/*This is the inbox list view */}
-                        <div className="column is-3">
-                            <div className="message-box">
-                                <div className="message-box-side">
-                                    {_messages}
-                                </div>
+                        <div className={"column is-3 is-inbox-left" + (this.state.activePanel === "left" ? " show" : " hide")} id="leftPanel">
+                            <div className="inbox-message-box">
+                                {_messages}
                             </div>
                         </div>
                         {/*This is the current message view */}
-                        <div className="column is-9">
-                            <div className="container" style={{height: '100%', width:'100%'}}>
+                        <div className={"column is-9 is-inbox-right" + (this.state.activePanel === "right" ? " show" : " hide")} id="rightPanel">
+                            <div className="container" style={{height: '100%'}}>
                                 {this.state.selected === undefined ? (
                                     <div>
                                         <p className="has-text-weight-semibold">You haven't selected a message yet.</p>
@@ -101,15 +104,13 @@ export default class InboxPage extends Component {
                                     </div>
                                 )}
                                 {this.state.selected !== undefined && (
-                                    <div className="is-down-right">
-                                        <div className="field is-grouped">
-                                            <Link to={"/dm/send/"+messages[selected].receiver.username}>
-                                                <Button
-                                                    classes={"is-link has-text-weight-semibold is-uppercase"}
-                                                    label={'Send message to ' + messages[selected].receiver.username}
-                                                />
-                                            </Link>
-                                        </div>
+                                    <div className="field is-grouped">
+                                        <Link to={"/dm/send/"+messages[selected].receiver.username}>
+                                            <Button
+                                                classes={"is-link has-text-weight-semibold is-uppercase"}
+                                                label={'Send message to ' + messages[selected].receiver.username}
+                                            />
+                                        </Link>
                                     </div>
                                 )}
                             </div>

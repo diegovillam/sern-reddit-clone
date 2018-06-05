@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 export default class Button extends Component {
     render() {
-        let styles = {marginTop: '2px', marginRight: '10px'};
+        let styles = {};
         return (
             this.props.sending ? (
                 <div className="control">

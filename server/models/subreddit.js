@@ -16,5 +16,8 @@ module.exports = (sequelize, DataTypes) => {
 		models.subreddit.hasMany(models.rule, { onDelete: 'cascade', hooks: true });
 		models.subreddit.hasMany(models.suspension, { onDelete: 'cascade', hooks: true });
 	};
+	subreddit.settings = {
+		maxPerPage: 20
+	};
 	return subreddit;
 };
